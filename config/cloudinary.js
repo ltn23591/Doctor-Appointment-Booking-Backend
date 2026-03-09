@@ -7,6 +7,7 @@ const connectCloudinary = async () => {
             !process.env.CLOUDINARY_NAME ||
             !process.env.CLOUDINARY_API_KEY ||
             !process.env.CLOUDINARY_SECRET_KEY
+                         
         ) {
             throw new Error(
                 'Thiếu thông tin cấu hình Cloudinary trong file .env!',

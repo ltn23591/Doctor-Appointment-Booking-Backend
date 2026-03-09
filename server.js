@@ -5,6 +5,7 @@ const connectDB = require('./config/mongodb');
 const connectCloudinary = require('./config/cloudinary');
 const app = express();
 const port = 3000;
+const adminRouter = require('./routes/adminRoute');
 
 // Middleware
 app.use(express.json());
@@ -13,6 +14,7 @@ connectDB();
 connectCloudinary();
 
 // Route
+app.use('/api/admin', adminRouter);
 app.get('/', (req, res) => {
     res.send('API WORKING!');
 });
