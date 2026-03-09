@@ -4,6 +4,7 @@ const validator = require('validator');
 const doctorModel = require('../models/doctorModel');
 const cloudinary = require('cloudinary').v2;
 const bcrypt = require('bcrypt');
+// Add doctor
 const addDoctor = async (req, res) => {
     try {
         const {
