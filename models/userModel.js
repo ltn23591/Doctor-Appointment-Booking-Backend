@@ -14,6 +14,6 @@ const userrSchema = new mongoose.Schema({
     dob: { type: String, default: 'Not selected' },
     phone: { type: Number, default: '0000000000' },
 });
-const userModel = mongoose.models.user || mongoose.model('doctor', userrSchema);
+const userModel = mongoose.models.user || mongoose.model('user', userrSchema);
 
 module.exports = userModel;
