@@ -1,4 +1,5 @@
 require('dotenv').config();
+const cloudinary = require('cloudinary').v2;
 const bcrypt = require('bcrypt');
 const validator = require('validator');
 const userModel = require('../models/userModel');
@@ -53,7 +54,7 @@ const registerUser = async (req, res) => {
     }
 };
 
-// Logiin to user
+// Login to user
 const loginUser = async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -84,7 +85,69 @@ const loginUser = async (req, res) => {
     }
 };
 
+// get data user
+const getDataUser = async (req, res) => {
+    try {
+        const { userId } = req.body;
+        const userData = await userModel.findById(userId).select('-password');
+        return res.json({
+            success: true,
+            userData,
+        });
+    } catch (error) {
+        return res.json({
+            success: false,
+            message: error.message,
+        });
+    }
+};
+
+const updateDataUser = async (req, res) => {
+    try {
+        const { userId, name, phone, address, dob, gender } = req.body;
+        const imageFile = req.file;
+
+        if (!name || !phone || !dob || !gender) {
+            return res.json({
+                success: false,
+                message: 'Data Missing',
+            });
+        }
+
+        await userModel.findByIdAndUpdate(userId, {
+            name,
+            phone,
+            address: JSON.parse(address),
+            dob,
+            gender,
+        });
+        if (imageFile) {
+            // upload file cloudinary
+            const imageUpload = await cloudinary.uploader.upload(
+                imageFile.path,
+                {
+                    resource_type: 'image',
+                },
+            );
+            const imageURL = imageUpload.secure_url;
+
+            await userModel.findByIdAndUpdate(userId, { image: imageURL });
+        }
+        res.json({
+            success: true,
+            message: 'Profile updated',
+        });
+    } catch (error) {
+        console.log(error);
+        res.json({
+            success: false,
+            message: error.message,
+        });
+    }
+};
 module.exports = {
     registerUser,
     loginUser,
+    getDataUser,
+    updateDataUser,
 };
