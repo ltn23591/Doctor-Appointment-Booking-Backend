@@ -10,7 +10,7 @@ const authUser = (req, res, next) => {
             });
         }
         const token_decode = jwt.verify(token, process.env.JWT_SECRET);
-        req.body.userId = token_decode.id;
+        req.userId = token_decode.id;
         next();
     } catch (error) {
         console.log(error);

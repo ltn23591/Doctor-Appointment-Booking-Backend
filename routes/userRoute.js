@@ -3,7 +3,7 @@ const {
     registerUser,
     loginUser,
     getDataUser,
-    updateDataUser,
+    updateDataUser,bookAppointment
 } = require('../controllers/userController');
 const authUser = require('../middlewares/authUser');
 const multer = require('../middlewares/multer');
@@ -19,5 +19,5 @@ userRoute.post(
     authUser,
     updateDataUser,
 );
-
+userRoute.get('/book-appoinment', authUser, bookAppointment);
 module.exports = userRoute;
